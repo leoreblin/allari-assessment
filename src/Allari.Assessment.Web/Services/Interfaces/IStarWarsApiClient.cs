@@ -1,6 +1,6 @@
 ﻿using Allari.Assessment.Web.Models;
 
-namespace Allari.Assessment.Web.Services
+namespace Allari.Assessment.Web.Services.Interfaces
 {
     public interface IStarWarsApiClient
     {

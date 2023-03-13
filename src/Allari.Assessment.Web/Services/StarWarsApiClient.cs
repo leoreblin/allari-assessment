@@ -1,7 +1,7 @@
 ﻿using Allari.Assessment.Web.Models;
+using Allari.Assessment.Web.Services.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using static System.Net.WebRequestMethods;
 
 namespace Allari.Assessment.Web.Services
 {
@@ -18,36 +18,49 @@ namespace Allari.Assessment.Web.Services
         ///<inheritdoc/>
         public List<StarWarsPeople> GetPeople(string path)
         {
-            var request = new HttpRequestMessage
+            try
             {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(string.Concat(_endpoint, path))
-            };
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri(string.Concat(_endpoint, path))
+                };
 
-            using var response = _httpClient.Send(request);
-            response.EnsureSuccessStatusCode();
-            StreamReader sr = new StreamReader(response.Content.ReadAsStream());
-            JObject? data = (JObject)JsonConvert.DeserializeObject(sr.ReadToEnd());
-            JArray? array = JArray.Parse(data["results"].ToString());
-
-            return array.ToObject<List<StarWarsPeople>>();
+                using var response = _httpClient.Send(request);
+                response.EnsureSuccessStatusCode();
+                StreamReader sr = new StreamReader(response.Content.ReadAsStream());
+                JObject? data = (JObject)JsonConvert.DeserializeObject(sr.ReadToEnd());
+                JArray? array = JArray.Parse(data["results"].ToString());
+                return array.ToObject<List<StarWarsPeople>>();
+            }
+            catch (HttpRequestException ex)
+            {
+                throw ex;
+            }            
         }
 
         ///<inheritdoc/>
         public async Task<List<StarWarsPeople>> GetPeopleAsync(string path)
         {
-            var request = new HttpRequestMessage
+            try
             {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(string.Concat(_endpoint, path))
-            };
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri(string.Concat(_endpoint, path))
+                };
 
-            using var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            var results = JsonConvert.DeserializeObject<RootApiResponse>(
-                await response.Content.ReadAsStringAsync());
+                using var response = await _httpClient.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                var results = JsonConvert.DeserializeObject<RootApiResponse>(
+                    await response.Content.ReadAsStringAsync());
 
-            return results.Results ?? new List<StarWarsPeople>();
+                return results.Results ?? new List<StarWarsPeople>();
+            }
+            catch (HttpRequestException ex)
+            {
+                throw ex;
+            }            
         }
     }
 }

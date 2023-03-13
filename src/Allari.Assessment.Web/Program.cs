@@ -1,4 +1,5 @@
 using Allari.Assessment.Web.Services;
+using Allari.Assessment.Web.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,8 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>    
+    <button type="button" class="btn btn-dark list" onclick="location.href='@Url.Action("Index", "StarWarsPeople")'">
+        <span class="btn-test">List characters</span>
+        <i class="fa-solid fa-jedi"></i>
+    </button>
 </div>

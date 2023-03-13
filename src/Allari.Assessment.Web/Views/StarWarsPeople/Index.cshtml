@@ -1,0 +1,52 @@
+﻿@model IEnumerable<StarWarsPeople>
+@{
+    ViewBag.Title = "Star Wars People Table";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+
+</head>
+<div hidden class="loader">
+</div>
+<div>
+    <div>
+        <h2 style="color: #f2f2f2">Star Wars Characters</h2>
+        <table class="table tbl-characters">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Height)</th>
+            <th>@Html.DisplayNameFor(model => model.Mass)</th>
+            <th>@Html.DisplayNameFor(model => model.Gender)</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Height)</td>
+                <td>@Html.DisplayFor(modelItem => item.Mass)</td>
+                <td>@Html.DisplayFor(modelItem => item.Gender)</td>
+            </tr>
+        }
+    </table>
+    </div>
+    <div>
+        <input type="button" class="btn btn-dark list-async" value="List Async" onclick="getListAsync()" />
+        <input type="button" class="btn btn-dark list-async" value="Home" onclick="location.href='@Url.Action("Index", "Home")'" />
+    </div>
+</div>
+<script>
+    function getListAsync() {
+        const loader = document.querySelector(".loader");
+        if (loader) {
+            loader.classList.remove("loader-hidden")
+        }
+
+        loader.removeAttribute("hidden");
+
+        return fetch('StarWarsPeople/List')
+            .then(() => {
+                loader.classList.add("loader-hidden")
+            })
+            .catch(error => console.log(error))
+    }
+</script>
